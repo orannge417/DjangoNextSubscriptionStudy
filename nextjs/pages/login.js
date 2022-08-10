@@ -1,23 +1,24 @@
+// メールアドレスとパスワードを入力して、送信ボタンをクリックすると、Action のログイン関数をコール
+
 import { useState } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { useRouter } from 'next/router'
-import { register } from '../actions/auth'
+import { login } from '../actions/auth'
 import Loader from 'react-loader-spinner'
 import Head from 'next/head'
 
-export default function Register(){
+export default function Login() {
   const dispatch = useDispatch()
   const router = useRouter()
   const isAuthenticated = useSelector((state) => state.auth.isAuthenticated)
   const loading = useSelector((state) => state.auth.loading)
 
   const [formData, setFormData] = useState({
-    name: '',
     email: '',
     password: '',
   })
 
-  const { name, email, password } = formData
+  const { email, password } = formData
 
   const onChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value })
@@ -27,7 +28,7 @@ export default function Register(){
     e.preventDefault()
 
     if (dispatch && dispatch !== null && dispatch !== undefined) {
-      await dispatch(register(name, email, password))
+      await dispatch(login(email, password))
     }
   }
 
@@ -38,25 +39,11 @@ export default function Register(){
   return (
     <>
       <Head>
-        <title>有料会員サイト | アカウント登録</title>
+        <title>有料会員サイト | ログイン</title>
       </Head>
 
-      <div className="text-center text-2xl mb-5">アカウント登録</div>
+      <div className="text-center text-2xl mb-5">ログイン</div>
       <form className="w-1/3 mx-auto" onSubmit={onSubmit}>
-        <div className="mb-4">
-          <div className="mb-1" htmlFor="name">
-            名前
-          </div>
-          <input
-            className="input-form"
-            type="text"
-            name="name"
-            placeholder="フルスタックチャンネル"
-            onChange={onChange}
-            value={name}
-            required
-          />
-        </div>
         <div className="mb-4">
           <div className="mb-1" htmlFor="email">
             メールアドレス

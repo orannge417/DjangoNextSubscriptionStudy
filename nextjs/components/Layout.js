@@ -1,7 +1,22 @@
+import { useEffect } from 'react'
+import { useDispatch } from 'react-redux'
+import { refresh } from '../actions/auth'
 import Head from 'next/head'
 import Navigation from './Navigation'
 
 const Layout = (props) => {
+  const dispatch = useDispatch()
+
+  // ページを更新する際にリフレッシュトークンを送信してアクセストークンを再発行する(refresh関数)
+  useEffect(() => {
+    const fn = async () => {
+      if (dispatch && dispatch !== null && dispatch !== undefined) {
+        await dispatch(refresh())
+      }
+    }
+    fn()
+  }, [dispatch])
+
   return (
     <>
       <Head>

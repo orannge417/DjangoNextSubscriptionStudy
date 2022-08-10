@@ -1,6 +1,17 @@
 import Link from 'next/link'
+import { useSelector, useDispatch } from 'react-redux'
+import { logout } from '../actions/auth'
 
 const Navigation = () => {
+  const dispatch = useDispatch()
+  const isAuthenticated = useSelector((state) => state.auth.isAuthenticated)
+
+  const logoutHandler = async () => {
+    if (dispatch && dispatch !== null && dispatch !== undefined) {
+      await dispatch(logout())
+    }
+  }
+
   return (
     <>
       <div className="bg-gray-900">
@@ -13,15 +24,21 @@ const Navigation = () => {
                 </a>
               </Link>
             </div>
-            <div>
-              <div>
-                <Link href="/login">
-                  <a className="button-nav mr-4">ログイン</a>
-                </Link>
-                <Link href="/register">
-                  <a className="button-nav">アカウント登録</a>
-                </Link>
-              </div>
+            <div className="">
+              {isAuthenticated ? (
+                <div onClick={logoutHandler} className="cursor-pointer button-nav">
+                  ログアウト
+                </div>
+              ) : (
+                <div>
+                  <Link href="/login">
+                    <a className="button-nav mr-4">ログイン</a>
+                  </Link>
+                  <Link href="/register">
+                    <a className="button-nav">アカウント登録</a>
+                  </Link>
+                </div>
+              )}
             </div>
           </div>
         </div>
